@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-import uvicorn
-from . import schemas
+from . import schemas, models
+from .database import engine
 
 app = FastAPI()
 
+models.ModelDB.metadata.create_all(engine)
+
 @app.post('/blog')
-def create(request:schemas.Blog):
-    return request
+def create(request:schemas.Blog, db):
+    return db
