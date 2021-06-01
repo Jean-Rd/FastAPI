@@ -1,15 +1,13 @@
 from pydantic import BaseModel
+from typing import List
 
-class Blog(BaseModel):
-
-    title : str
-    body : str
-
-
-class ShowBlog(BaseModel):
+class BlogBase(BaseModel):
 
     title : str
     body : str
+
+
+class Blog(BlogBase):
     class Config():
         orm_mode = True
 
@@ -20,5 +18,24 @@ class User(BaseModel):
     email : str
     password : str
 
+
+class ShowUser(BaseModel):
+
+    name : str
+    email : str
+    blogs : List[Blog] = []
+
     class Config():
         orm_mode = True
+
+
+class ShowBlog(BaseModel):
+    # show all mejorar ^ show id para que muestre solo uno
+    title : str
+    body : str
+    creator : ShowUser
+    class Config():
+        orm_mode = True
+
+
+
