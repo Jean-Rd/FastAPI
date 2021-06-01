@@ -4,10 +4,13 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 
-router = APIRouter()
+router = APIRouter(
+    prefix='/blog',
+    tags=['Blogs']
+)
 
 
-@router.post('/blog', tags=['blogs'])
+@router.post('/')
 def create(request:schemas.Blog, db:Session = Depends(get_db)):
 
     new_blog = models.ModelDB(title=request.title, body=request.body, user_id=1)
@@ -17,7 +20,7 @@ def create(request:schemas.Blog, db:Session = Depends(get_db)):
     return new_blog
 
 
-@router.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=['blogs'])
+@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id:int, db:Session = Depends(get_db)):
     blog = db.query(models.ModelDB).filter(models.ModelDB.id == id)
     if not blog.first():
@@ -29,7 +32,7 @@ def destroy(id:int, db:Session = Depends(get_db)):
     return f"Done, the blog {id} are to delete."
 
 
-@router.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['blogs'])
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id:int, request: schemas.Blog, db:Session = Depends(get_db)):
     blog = db.query(models.ModelDB).filter(models.ModelDB.id == id)
 
@@ -42,19 +45,17 @@ def update(id:int, request: schemas.Blog, db:Session = Depends(get_db)):
     return f"Blog witid {id} to are update."
 
 
-@router.get('/blog', response_model=List[schemas.ShowBlog], tags=['blogs'])
+@router.get('/', response_model=List[schemas.ShowBlog])
 def all(db: Session = Depends(get_db)):
 
     blogs = db.query(models.ModelDB).all()
     return blogs
 
 
-@router.get('/blog/{id}', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowBlog, tags=['blogs'])
+@router.get('/{id}', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowBlog)
 def show(id:int, db: Session = Depends(get_db)):
     query_blog = db.query(models.ModelDB).filter(models.ModelDB.id == id).first()
     if not query_blog:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} is'nt avalible.")
-        # response.status_code = status.HTTP_404_NOT_FOUND
-        # return {'detail':f"Blog with id {id}:is'nt avalible."}
     return query_blog
 
