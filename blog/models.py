@@ -10,7 +10,7 @@ class ModelDB(database.Base):
     title = Column(String)
     body = Column(String)
 
-    user_id = Column(Integer, ForeignKey('Users.id'))
+    user_id = Column(String, ForeignKey('Users.email'))
 
     creator = relationship("UserDB", back_populates="blogs")
 

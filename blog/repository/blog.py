@@ -2,12 +2,21 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from .. import schemas, models
 
+
+
+
+
 def get_all(db:Session):
     blogs = db.query(models.ModelDB).all()
     return blogs
 
 def create(request:schemas.Blog, db:Session):
-    new_blog = models.ModelDB(title=request.title, body=request.body, user_id=1)
+    match = db.query(models.UserDB).filter(models.UserDB.name == request.user_creator).first()
+    if not match:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'El usuario {request.user_creator} es invalido.')
+
+    new_blog = models.ModelDB(title=request.title, body=request.body, user_id=request.user_creator)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)

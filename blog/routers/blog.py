@@ -26,8 +26,8 @@ def update(id:int, request: schemas.Blog, db:Session = Depends(get_db), curent_u
     return blog.update(id, request, db)
 
 
-@router.get('/', response_model=List[schemas.ShowBlog], )
-def all(db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
+@router.get('/', response_model=List[schemas.ShowBlog])
+def all(db: Session = Depends(get_db) ,curent_user: schemas.User = Depends(oauth.get_current_user)):
     return blog.get_all(db)
 
 
