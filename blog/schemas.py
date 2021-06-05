@@ -2,15 +2,11 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class get_name(BaseModel):
-
-    name: str
-
 class BlogBase(BaseModel):
 
     title : str
     body : str
-    user_creator: str
+    password: str
 
 
 class Blog(BlogBase):

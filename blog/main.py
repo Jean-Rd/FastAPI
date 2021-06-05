@@ -2,8 +2,23 @@ from fastapi import FastAPI
 from . import models
 from .database import engine
 from .routers import blog, user, login
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "https://www.PsiBlog.com",
+    "http://www.PsiBlog.com",
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 models.ModelDB.metadata.create_all(engine)
 
