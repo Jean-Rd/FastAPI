@@ -4,7 +4,11 @@ from .database import engine
 from .routers import blog, user, login
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(
+    title="My FastAPI",
+    description="Blog Page",
+    version="0.1.0"
+)
 
 origins = [
     "https://www.PsiBlog.com",

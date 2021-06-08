@@ -6,7 +6,8 @@ class BlogBase(BaseModel):
 
     title : str
     body : str
-    password: str
+    #email_confirm: str
+    #user_id : str
 
 
 class Blog(BlogBase):
@@ -53,4 +54,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+
+class EmailData(BaseModel):
+    mail : str
 

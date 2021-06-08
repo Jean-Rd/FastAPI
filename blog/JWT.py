@@ -28,3 +28,10 @@ def verify_token(token: str, credentials_exception):
         token_data = schemas.TokenData(username=email)
     except JWTError:
         raise credentials_exception
+
+def email_token(token: str):
+
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    email: str = payload.get("sub")
+
+    return email

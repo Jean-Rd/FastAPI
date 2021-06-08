@@ -4,6 +4,7 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from ..repository import blog
+from ..JWT import email_token
 
 router = APIRouter(
     prefix='/blog',
@@ -12,8 +13,8 @@ router = APIRouter(
 
 
 @router.post('/')
-def create(request:schemas.Blog, db:Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
-    return blog.create(request, db)
+def create(request: schemas.Blog, token: str = Depends(oauth.oauth2_scheme),db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
+    return blog.create(request, db), email_token(token)
 
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
