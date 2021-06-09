@@ -1,13 +1,12 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+from datetime import datetime
 
 
 class BlogBase(BaseModel):
 
     title : str
     body : str
-    #email_confirm: str
-    #user_id : str
 
 
 class Blog(BlogBase):
@@ -25,18 +24,36 @@ class User(BaseModel):
 class ShowUser(BaseModel):
 
     name : str
-    email : str
-    #blogs : List[Blog] = []
+    blogs : List[Blog] = []
+
+    class Config():
+        orm_mode = True
+
+class RelationUser(BaseModel):
+
+    name : str
+
+    class Config():
+        orm_mode = True
+
+
+class ShowUserBlog(BaseModel):
+
+    title : str
+    body : str
+    create_at : datetime
+    creator : RelationUser
 
     class Config():
         orm_mode = True
 
 
 class ShowBlog(BaseModel):
-    # show all mejorar ^ show id para que muestre solo uno
+
     title : str
     body : str
-    creator : ShowUser
+    create_at : datetime
+
     class Config():
         orm_mode = True
 
@@ -58,4 +75,5 @@ class TokenData(BaseModel):
 
 class EmailData(BaseModel):
     mail : str
+
 

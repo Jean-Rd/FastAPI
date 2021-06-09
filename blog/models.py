@@ -13,7 +13,7 @@ class UserDB(database.Base):
     password = Column(String, nullable=False)
     create_at = Column(DateTime, default=datetime.now())
 
-    blogs = relationship('ModelDB', backref='owner')
+    blogs = relationship('ModelDB', back_populates='creator')
 
 
 class ModelDB(database.Base):
@@ -26,6 +26,7 @@ class ModelDB(database.Base):
     create_at = Column(DateTime, default=datetime.now())
 
     user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
+    creator = relationship('UserDB', back_populates='blogs')
 
 class CommentsDB(database.Base):
 
