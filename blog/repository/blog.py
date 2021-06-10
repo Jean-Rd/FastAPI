@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from typing import List
 from sqlalchemy.orm import Session
 from .. import schemas, models
 from ..JWT import email_token
@@ -92,11 +91,14 @@ def update(id: int, password_confirm: str, request: schemas.Blog, db: Session, t
     return f"El blog con id:{id} ah sido actualizado."
 
 
-def get_show(blog_name: str, db: Session):
+def get_show(blog_id: int, db: Session):
 
-    query_blog = db.query(models.ModelDB).filter(models.ModelDB.title == blog_name).all()
+    query_blog = db.query(models.ModelDB).filter(models.ModelDB.id == blog_id).first()
 
     if not query_blog:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with name {blog_name} is'nt avalible.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with ID:{blog_id} is'nt avalible.")
 
     return query_blog
+
+
+

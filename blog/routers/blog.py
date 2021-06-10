@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, status, Response
 from .. import schemas, oauth
 from ..database import get_db
 from sqlalchemy.orm import Session
-from typing import List, Dict
-from ..repository import blog
+from typing import List
+from ..repository import blog, comments
 
 
 router = APIRouter(
@@ -37,7 +37,14 @@ def all(db: Session = Depends(get_db) , token: str = Depends(oauth.oauth2_scheme
     return blog.get_all(db, token)
 
 
-@router.get('/{blog_name}', status_code=200, response_model=List[schemas.ShowBlog])
-def show(blog_name: str, db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
-    return blog.get_show(blog_name, db)
+@router.post("/{blog_id}/comment")
+def create_comment(blog_id: int, request: schemas.Comment, token: str = Depends(oauth.oauth2_scheme),
+                   db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
 
+    return comments.create_comment(token, blog_id, request, db)
+
+
+@router.get('/{blog_id}', status_code=200, response_model=schemas.ShowBlogID)
+def show(blog_id: int, db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
+
+    return blog.get_show(blog_id, db)

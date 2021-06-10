@@ -26,13 +26,22 @@ class ModelDB(database.Base):
     create_at = Column(DateTime, default=datetime.now())
 
     user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
+
     creator = relationship('UserDB', back_populates='blogs')
+    comment_relation = relationship('CommentsDB', back_populates='blog_relation')
+
 
 class CommentsDB(database.Base):
 
     __tablename__ = 'Comments'
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False)
-    curent_blog_id = Column(Integer, nullable=False)
+    name = Column(String, ForeignKey('Users.name'))
+    body_comment = Column(String, nullable=False)
+    blog_id = Column(Integer, nullable=False)
     create_at = Column(DateTime, default=datetime.now())
+    user_id = Column(Integer, ForeignKey('Blogs.id'),nullable=False)
+
+    blog_relation = relationship('ModelDB', back_populates='comment_relation')
+
+

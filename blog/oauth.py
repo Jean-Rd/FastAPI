@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from .JWT import verify_token, email_token
+from .JWT import verify_token
 
 
 

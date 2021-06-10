@@ -77,3 +77,37 @@ class EmailData(BaseModel):
     mail : str
 
 
+class UserID(BaseModel):
+
+    name : str
+    id : int
+
+class Comment(BaseModel):
+
+    comment: str
+
+class BaseComment(BaseModel):
+
+    name: str
+    body_comment: str
+    create_at: datetime
+
+
+class getComment(BaseComment):
+
+    class Config():
+
+        orm_mode = True
+
+
+class ShowBlogID(BaseModel):
+
+    title: str
+    body: str
+    create_at: datetime
+
+    comment_relation: List[getComment] = []
+
+    class Config():
+
+        orm_mode = True
