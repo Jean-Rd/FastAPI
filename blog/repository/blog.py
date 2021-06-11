@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Response
 from sqlalchemy.orm import Session
 from .. import schemas, models
 from ..JWT import email_token
@@ -58,7 +58,7 @@ def destroy(id: int, db:Session, password_confirm: str, token: str):
     blog = db.query(models.ModelDB).filter(models.ModelDB.id == id)
     blog.delete(synchronize_session=False)
     db.commit()
-    return f"El blog con id:{id} ah sido eliminado."
+    return {'delete':f"El blog con id:{id}, ah sido eliminado."}
 
 def update(id: int, password_confirm: str, request: schemas.Blog, db: Session, token: str):
 
@@ -88,7 +88,7 @@ def update(id: int, password_confirm: str, request: schemas.Blog, db: Session, t
     blog = db.query(models.ModelDB).filter(models.ModelDB.id == id)
     blog.update(request.dict())
     db.commit()
-    return f"El blog con id:{id} ah sido actualizado."
+    return blog.first()
 
 
 def get_show(blog_id: int, db: Session):

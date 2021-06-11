@@ -12,20 +12,20 @@ router = APIRouter(
 )
 
 
-@router.post('/')
+@router.post('/', response_model=schemas.ShowBlog)
 def create(request: schemas.Blog,db: Session = Depends(get_db), token: str = Depends(oauth.oauth2_scheme)
            ,curent_user: schemas.User = Depends(oauth.get_current_user)):
 
     return blog.create(request, db, token)
 
 
-@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def destroy(id:int, password_confirm: str,db:Session = Depends(get_db), token: str = Depends(oauth.oauth2_scheme),
             curent_user: schemas.User = Depends(oauth.get_current_user)):
-    return Response(blog.destroy(id, db, password_confirm, token))
+    return blog.destroy(id, db, password_confirm, token)
 
 
-@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowBlog)
 def update(id:int, password_confirm: str,request: schemas.Blog, db:Session = Depends(get_db), token: str = Depends(oauth.oauth2_scheme),
            curent_user: schemas.User = Depends(oauth.get_current_user)):
     return blog.update(id, password_confirm, request, db, token)
@@ -37,7 +37,7 @@ def all(db: Session = Depends(get_db) , token: str = Depends(oauth.oauth2_scheme
     return blog.get_all(db, token)
 
 
-@router.post("/{blog_id}/comment")
+@router.post("/{blog_id}/comment", response_model=schemas.getComment)
 def create_comment(blog_id: int, request: schemas.Comment, token: str = Depends(oauth.oauth2_scheme),
                    db: Session = Depends(get_db), curent_user: schemas.User = Depends(oauth.get_current_user)):
 

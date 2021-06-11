@@ -106,8 +106,13 @@ class ShowBlogID(BaseModel):
     body: str
     create_at: datetime
 
-    comment_relation: List[getComment] = []
+    comentarios: List[getComment] = []
 
     class Config():
 
         orm_mode = True
+
+
+class Text(BaseModel):
+
+    text: str
