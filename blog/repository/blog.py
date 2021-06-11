@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status, Response
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from .. import schemas, models
 from ..JWT import email_token

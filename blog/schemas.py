@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 
@@ -17,7 +17,7 @@ class Blog(BlogBase):
 class User(BaseModel):
 
     name : str
-    email : str
+    email : EmailStr
     password : str
 
 

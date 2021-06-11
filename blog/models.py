@@ -8,9 +8,9 @@ class UserDB(database.Base):
     __tablename__ = 'Users'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String(30), nullable=False)
     email = Column(String, nullable=False, unique=True)
-    password = Column(String, nullable=False)
+    password = Column(String(30), nullable=False)
     create_at = Column(DateTime, default=datetime.now())
 
     blogs = relationship('ModelDB', back_populates='creator')
@@ -23,12 +23,12 @@ class ModelDB(database.Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     body = Column(String, nullable=False)
-    create_at = Column(DateTime, default=datetime.now())
 
     user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
 
+    create_at = Column(DateTime, default=datetime.now())
+
     creator = relationship('UserDB', back_populates='blogs')
-    #comment_relation = relationship('CommentsDB', back_populates='blog_relation')
 
 
 class CommentsDB(database.Base):
@@ -39,8 +39,9 @@ class CommentsDB(database.Base):
     name = Column(String)
     body_comment = Column(String, nullable=False)
     blog_id = Column(Integer, ForeignKey('Blogs.id'))
-    create_at = Column(DateTime, default=datetime.now())
     user_id = Column(Integer, nullable=False)
+
+    create_at = Column(DateTime, default=datetime.now())
 
     blog_relation = relationship('ModelDB', backref=backref('comentarios', lazy = True))
 
