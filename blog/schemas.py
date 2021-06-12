@@ -116,3 +116,13 @@ class ShowBlogID(BaseModel):
 class Text(BaseModel):
 
     text: str
+
+
+class UserCreator(BaseModel):
+
+    name : str
+    email : str
+
+    class Config():
+
+        orm_mode = True

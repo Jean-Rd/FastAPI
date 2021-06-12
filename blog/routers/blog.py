@@ -25,7 +25,7 @@ def destroy(id:int, password_confirm: str,db:Session = Depends(get_db), token: s
     return blog.destroy(id, db, password_confirm, token)
 
 
-@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowBlog)
+@router.post('/{id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowBlog)
 def update(id:int, password_confirm: str,request: schemas.Blog, db:Session = Depends(get_db), token: str = Depends(oauth.oauth2_scheme),
            curent_user: schemas.User = Depends(oauth.get_current_user)):
     return blog.update(id, password_confirm, request, db, token)
