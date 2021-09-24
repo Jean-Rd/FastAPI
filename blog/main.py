@@ -3,11 +3,13 @@ from . import models
 from .database import engine
 from .routers import blog, user, login
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import ORJSONResponse
 
 app = FastAPI(
     title="My FastAPI",
     description="Blog Page",
-    version="0.1.0"
+    version="0.1.0",
+    default_response_class=ORJSONResponse
 )
 
 origins = [
